@@ -1,6 +1,11 @@
 How to build:
 
-Install openafs-fuse and libopenafs-dev in addition to the usual AFS packages.
+On Debian, install openafs-fuse and libopenafs-dev in addition to the usual AFS packages.
+
+You also need bison and yacc (flex).
+
+If not on Debian, you need to build and install libuafs from source (probably, assuming
+openafs-fuse isn't packaged elsewhere).
 
 Run:
 
