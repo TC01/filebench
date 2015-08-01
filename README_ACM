@@ -1,0 +1,17 @@
+How to build:
+
+Install openafs-fuse and libopenafs-dev in addition to the usual AFS packages.
+
+Run:
+
+* aclocal
+* autoheader
+* automake --add-missing
+* autoconf
+
+Then, the usual dance of:
+
+* ./configure
+* make
+
+There should be lots of warnings on the fb_uafs.c file but it should build...

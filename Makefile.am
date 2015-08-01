@@ -3,6 +3,9 @@ SUBDIRS = workloads
 # we depend on this lex & yacc generated file
 BUILT_SOURCES = parser_gram.h
 
+filebench_LDADD=-luafs -L/usr/lib/afs -lafsrpc -lrxkad -lcmd -lafsutil -lafsauthent -lcrypt -lresolv -ldes
+filebench_CFLAGS=-I./
+
 bin_PROGRAMS = filebench
 filebench_SOURCES = eventgen.c fb_avl.c fb_localfs.c fb_uafs.c \
 		    fb_random.c fileset.c flowop.c flowop_library.c \

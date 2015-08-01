@@ -44,10 +44,13 @@
 #include <strings.h>
 
 #define UKERNEL 1
+#define HAVE_FSBLKCNT_T 1
 #include <afs/param.h>
 #include <afs/sysincludes.h>
 #include <afs/afs_usrops.h>
 #include <afs/afs_args.h>
+//#include <afs/afs_prototypes.h>
+//#include <afs/osi_prototypes.h>
 
 #include "filebench.h"
 #include "fsplug.h"
@@ -71,12 +74,12 @@ static int fb_uafs_pwrite(fb_fdesc_t *, caddr_t, fbint_t, off64_t);
 static int fb_uafs_write(fb_fdesc_t *, caddr_t, fbint_t);
 static int fb_uafs_lseek(fb_fdesc_t *, off64_t, int);
 static int fb_uafs_truncate(fb_fdesc_t *, off64_t);
-static int fb_uafs_rename(const char *, const char *);
+static int fb_uafs_rename(char *, char *);
 static int fb_uafs_close(fb_fdesc_t *);
-static int fb_uafs_link(const char *, const char *);
-static int fb_uafs_symlink(const char *, const char *);
+static int fb_uafs_link(char *, char *);
+static int fb_uafs_symlink(char *, char *);
 static int fb_uafs_unlink(char *);
-static ssize_t fb_uafs_readlink(const char *, char *, size_t);
+static ssize_t fb_uafs_readlink(char *, char *, size_t);
 static int fb_uafs_mkdir(char *, int);
 static int fb_uafs_rmdir(char *);
 static DIR *fb_uafs_opendir(char *);
@@ -85,7 +88,7 @@ static int fb_uafs_closedir(DIR *);
 static int fb_uafs_fsync(fb_fdesc_t *);
 static int fb_uafs_stat(char *, struct stat64 *);
 static int fb_uafs_fstat(fb_fdesc_t *, struct stat64 *);
-static int fb_uafs_access(const char *, int);
+static int fb_uafs_access(char *, int);
 static void fb_uafs_recur_rm(char *);
 
 static fsplug_func_t fb_uafs_funcs =
@@ -155,7 +158,7 @@ fb_uafs_funcvecinit(void)
 	int cacheFlags  = AFSCALL_INIT_MEMCACHE;
 
 	strcpy(afsMountPoint, "/afs");
-	strcpy(afsConfDir,  "/usr/vice/etc");
+	strcpy(afsConfDir,  "/etc/openafs");
 	/* won't matter */
 	strcpy(afsCacheDir, "/tmp/cache");
 
@@ -538,7 +541,7 @@ fb_uafs_unlink(char *path)
  * Does a readlink of a symbolic link.
  */
 static ssize_t
-fb_uafs_readlink(const char *path, char *buf, size_t buf_size)
+fb_uafs_readlink(char *path, char *buf, size_t buf_size)
 {
 	return (uafs_readlink(path, buf, buf_size));
 }
@@ -565,7 +568,7 @@ fb_uafs_lseek(fb_fdesc_t *fd, off64_t offset, int whence)
  * Do a posix rename of a file. Return what rename() returns.
  */
 static int
-fb_uafs_rename(const char *old, const char *new)
+fb_uafs_rename(char *old, char *new)
 {
 	return (uafs_rename(old, new));
 }
@@ -739,7 +742,7 @@ fb_uafs_truncate(fb_fdesc_t *fd, off64_t fse_size)
  * Does a link operation and returns the result
  */
 static int
-fb_uafs_link(const char *existing, const char *new)
+fb_uafs_link(char *existing, char *new)
 {
 	return (uafs_link(existing, new));
 }
@@ -748,7 +751,7 @@ fb_uafs_link(const char *existing, const char *new)
  * Does a symlink operation and returns the result
  */
 static int
-fb_uafs_symlink(const char *existing, const char *new)
+fb_uafs_symlink(char *existing, char *new)
 {
 	return (uafs_symlink(existing, new));
 }
@@ -757,7 +760,7 @@ fb_uafs_symlink(const char *existing, const char *new)
  * Does an access() check on a file.
  */
 static int
-fb_uafs_access(const char *path, int amode)
+fb_uafs_access(char *path, int amode)
 {
 	return (uafs_access(path, amode));
 }
