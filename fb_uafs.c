@@ -157,7 +157,7 @@ fb_uafs_funcvecinit(void)
 	int nDaemons    = 4; 
 	int cacheFlags  = AFSCALL_INIT_MEMCACHE;
 
-	strcpy(afsMountPoint, "/afs");
+	strcpy(afsMountPoint, "/tmp/afs");
 	strcpy(afsConfDir,  "/etc/openafs");
 	/* won't matter */
 	strcpy(afsCacheDir, "/tmp/cache");
